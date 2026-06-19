@@ -15,6 +15,7 @@
 # Temporary
 *.tmp
 *.backup
+*.txt
 
 # OS junk
 Thumbs.db

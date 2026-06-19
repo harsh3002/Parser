@@ -1,3 +1,4 @@
+
 `include "transction.sv"
 `include "interface.sv"
 
@@ -34,19 +35,24 @@ class driver;
     //Display function
     function display();
         $display("---------------------------------------------------------------------------------------------");
-        $display("%0t[GEN] : DRIVER PACKET DATA VALUES",$time);
-        $display("%0t[GEN] : Beat %0d = %0h", $time, x, tr.copy.packet_data_queue[x]);
+        $display("%0t[DRV] : DRIVER PACKET DATA VALUES",$time);
     endfunction
     
     //Reset function 
-    function reset_dut();
+    task reset_dut();
         
         $display("%0t[DRV] : PROCESSING INITIAL RESET",$time);
         drv_ifc.rst = 1'b1;
-        repeat(10) @(drv_ifc);
+        drv_ifc.drv_cb.s_axis_tdata = 0;
+        drv_ifc.drv_cb.s_axis_tkeep = 0;
+        drv_ifc.drv_cb.s_axis_tvalid = 0;
+        drv_ifc.drv_cb.s_axis_tlast = 0;
+        repeat(10) @(drv_ifc.drv_cb);
+        drv_ifc.drv_cb.rst = 1'b0;
+        @(drv_ifc.drv_cb);
         $display("%0t[DRV] : INITIAL RESET DONE",$time);
         
-    endfunction
+    endtask
     
     //Main stimulus genration task
     task drvie_stimulus;
@@ -54,23 +60,28 @@ class driver;
         reset_dut();
         display();
         
-        while(1) begin
+        forever begin
+        
+            gen_driver_mb.get(tr);
             
-            repeat(tr.copy.packet_len) begin
+            foreach(tr.copy.packet_data_queue[x]) begin
                 
-                @(negedge clk);
-                assert(tr.randomize());
-                gen_driver_mb.put(tr.copy);
-                display();
-                $display("[GEN] : DATA SENT TO DRIVER");
-                @(sco_bd_done);
-                #1;
+                @(drv_ifc.drv_cb);
+                drv_ifc.drv_cb.s_axis_tdata  = tr.copy.packet_data_queue[x];
+                drv_ifc.drv_cb.s_axis_tkeep  = 'hff;
+                drv_ifc.drv_cb.s_axis_tvalid = (x <= (tr.copy.packet_len - 1));
+                drv_ifc.drv_cb.s_axis_tlast  = (x == (tr.copy.packet_len - 1));
+                $display("%0t[DRV] : Beat %0d = %0h", $time, x, drv_ifc.drv_cb.s_axis_tdata);
+                $display("[DRV] : DATA DRVIEN");
             
             end
             
+            drv_ifc.drv_cb.s_axis_tdata  = 0;
+            drv_ifc.drv_cb.s_axis_tkeep  = 0;
+            drv_ifc.drv_cb.s_axis_tvalid = 0;
+            drv_ifc.drv_cb.s_axis_tlast  = 0;
+            
         end
-        
-        -> gen_done;
         
     endtask
 
