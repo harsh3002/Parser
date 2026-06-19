@@ -1,0 +1,21 @@
+# Vivado internal
+.Xil/
+*.jou
+*.log
+*.str
+
+# Build artifacts
+*.cache/
+*.runs/
+*.sim/
+*.gen/
+*.ip_user_files/
+*.hw/
+
+# Temporary
+*.tmp
+*.backup
+
+# OS junk
+Thumbs.db
+.DS_Store
