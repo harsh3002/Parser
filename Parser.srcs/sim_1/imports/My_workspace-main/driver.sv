@@ -41,7 +41,7 @@ class driver;
     //Reset function 
     function reset_dut();
         
-        
+        drv_ifc.rst = 1'b1;
         
     endfunction
     
