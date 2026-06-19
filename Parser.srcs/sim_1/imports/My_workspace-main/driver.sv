@@ -41,13 +41,17 @@ class driver;
     //Reset function 
     function reset_dut();
         
+        $display("%0t[DRV] : PROCESSING INITIAL RESET",$time);
         drv_ifc.rst = 1'b1;
+        repeat(10) @(drv_ifc);
+        $display("%0t[DRV] : INITIAL RESET DONE",$time);
         
     endfunction
     
     //Main stimulus genration task
     task drvie_stimulus;
-        
+
+        reset_dut();
         display();
         
         while(1) begin
