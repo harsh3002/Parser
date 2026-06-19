@@ -38,6 +38,13 @@ class driver;
         $display("%0t[GEN] : Beat %0d = %0h", $time, x, tr.copy.packet_data_queue[x]);
     endfunction
     
+    //Reset function 
+    function reset_dut();
+        
+        
+        
+    endfunction
+    
     //Main stimulus genration task
     task drvie_stimulus;
         
