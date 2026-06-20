@@ -64,6 +64,13 @@ interface parser_ifc();
     
     //Monitor clocking block
     clocking mon_cb @(posedge clk_i);
+
+        input   rst;
+        input   s_axis_tdata;
+        input   s_axis_tkeep;
+        input   s_axis_tvalid;
+        input   s_axis_tready;
+        input   s_axis_tlast;
                
         input   dst_mac;
         input   src_mac;

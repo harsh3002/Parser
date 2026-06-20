@@ -31,18 +31,18 @@ class monitor;
     
     //Display function
     function display();
-        $display("%0t[MON] : MONITOR",$time);
+        $display("%0t[MON] : MONITOR SAMPLED PACKET VALUE : %0h",$time,drv_ifc.mon_cb.s_axis_tdata);
     endfunction
     
     //Reset function 
     task reset_dut();
         
-        $display("%0t[DRV] : PROCESSING INITIAL RESET",$time);
-        drv_ifc.rst = 1'b1;
-        drv_ifc.drv_cb.s_axis_tdata = 0;
-        drv_ifc.drv_cb.s_axis_tkeep = 0;
-        drv_ifc.drv_cb.s_axis_tvalid = 0;
-        drv_ifc.drv_cb.s_axis_tlast = 0;
+        $display("%0t[MON] : SAMPLING RESET",$time);
+        drv_ifc.drv_cb.rst = 1'b1;
+        tr.s_axis_tdata = drv_ifc.drv_cb.s_axis_tdata ;
+        tr.s_axis_tkeep = drv_ifc.drv_cb.s_axis_tkeep ;
+        tr.s_axis_tvalid = drv_ifc.drv_cb.s_axis_tvalid ;
+        tr.s_axis_tlast = drv_ifc.drv_cb.s_axis_tlast ;
         repeat(10) @(drv_ifc.drv_cb);
         drv_ifc.drv_cb.rst = 1'b0;
         @(drv_ifc.drv_cb);
