@@ -14,68 +14,79 @@ import transaction_pkg::* ;
 class monitor;
     
     transaction tr;
-    mailbox_drv mon_sco_mb;
-    vifc        drc_ifc;
+    mailbox_mon mon_sco_mb;
+    vifc        mon_ifc;
     
     //initialize function for generator class
     function new(input      mailbox#(transaction)   mon_sco_mb, 
-                 virtual    parser_ifc              drv_ifc
+                 virtual    parser_ifc              mon_ifc
                  );
                    
         //Initialize 
         tr                      = new;
         this.mon_sco_mb         = mon_sco_mb;
-        this.drv_ifc            = drv_ifc; 
+        this.mon_ifc            = mon_ifc; 
         
     endfunction
     
     //Display function
     function display();
-        $display("%0t[MON] : MONITOR SAMPLED PACKET VALUE : %0h",$time,drv_ifc.mon_cb.s_axis_tdata);
+        $display("%0t[MON] : MONITOR",$time);
     endfunction
     
-    //Reset function 
-    task reset_dut();
+    //Reset  sampling function 
+    task sample_reset();
         
         $display("%0t[MON] : SAMPLING RESET",$time);
-        drv_ifc.drv_cb.rst = 1'b1;
-        tr.s_axis_tdata = drv_ifc.drv_cb.s_axis_tdata ;
-        tr.s_axis_tkeep = drv_ifc.drv_cb.s_axis_tkeep ;
-        tr.s_axis_tvalid = drv_ifc.drv_cb.s_axis_tvalid ;
-        tr.s_axis_tlast = drv_ifc.drv_cb.s_axis_tlast ;
-        repeat(10) @(drv_ifc.drv_cb);
-        drv_ifc.drv_cb.rst = 1'b0;
-        @(drv_ifc.drv_cb);
-        $display("%0t[DRV] : INITIAL RESET DONE",$time);
+        @(negedge mon_ifc.rst);
+        $display("%0t[MON] : SAMPLING RESET DONE",$time);
+        
+    endtask
+    
+    //Data sampling function
+    task sample_data();
+        
+        $display("%0t[MON] : SAMPLING DATA",$time);
+        tr.dst_mac_addr         = mon_ifc.dst_mac_addr;
+        tr.src_mac_addr         = mon_ifc.src_mac_addr;
+        tr.ethertype            = mon_ifc.ethertype;
+        tr.vlan_valid           = mon_ifc.vlan_present;
+        tr.vlan_id              = mon_ifc.vlan_id;
+        tr.qinq_valid           = mon_ifc.qinq_present;
+        tr.outer_vlan_id        = mon_ifc.outer_vlan_id;
+        tr.inner_vlan_id        = mon_ifc.inner_vlan_id;
+        tr.packet_len           = mon_ifc.packet_length;
+        tr.jumbo_frame_valid    = mon_ifc.jumbo_frame;
+        tr.unicast_addr_valid   = mon_ifc.is_unicast;
+        tr.multicast_addr_valid = mon_ifc.is_multicast;
+        tr.broadcast_addr_valid = mon_ifc.is_broadcast;
+        tr.ipv4_valid           = mon_ifc.is_ipv4;
+        tr.ipv6_valid           = mon_ifc.is_ipv6;
+        tr.arp_valid            = mon_ifc.is_arp;
+        tr.packet_data_queue.push_back(mon_ifc.s_axis_tdata);
+        
+        
+        
+        $display("%0t[MON] : SAMPLING DATA BEAT DONE",$time);
         
     endtask
     
     //Main stimulus genration task
-    task drvie_stimulus;
-
-        reset_dut();
-        display();
+    task sample_values;
         
         forever begin
         
-            gen_driver_mb.get(tr);
-            
-            foreach(tr.copy.packet_data_queue[x]) begin
-                
-                @(drv_ifc.drv_cb);
-                drv_ifc.drv_cb.s_axis_tdata  = tr.copy.packet_data_queue[x];
-                drv_ifc.drv_cb.s_axis_tkeep  = 'hff;
-                drv_ifc.drv_cb.s_axis_tvalid = (x <= (tr.copy.packet_len - 1));
-                drv_ifc.drv_cb.s_axis_tlast  = (x == (tr.copy.packet_len - 1));
-                $display("%0t[DRV] : Beat %0d = %0h", $time, x, drv_ifc.drv_cb.s_axis_tdata);
-                $display("[DRV] : DATA DRVIEN");
-            
+            @(mon_ifc.mon_cb);
+            if(mon_ifc.rst) begin
+                sample_reset;
             end
-            
-            drv_ifc.drv_cb.s_axis_tdata  = 0;
-            drv_ifc.drv_cb.s_axis_tkeep  = 0;
-            drv_ifc.drv_cb.s_axis_tvalid = 0;
-            drv_ifc.drv_cb.s_axis_tlast  = 0;
+            else if(mon_ifc.s_axis_tlast & mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready)begin
+                sample_data;
+                mon_sco_mb.put(tr);
+            end
+            else if(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready)begin
+                sample_data;
+            end
             
         end
         

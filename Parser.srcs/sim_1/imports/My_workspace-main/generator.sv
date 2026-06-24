@@ -12,6 +12,7 @@ class generator;
     
     transaction tr;
     mailbox_gen gen_driver_mb;
+    mailbox_gen gen_sco_mb;
     event       gen_done, sco_bd_done;
     bit  [1:0]  packet_len_type; 
     bit  [2:0]  dst_mac_addr_type;
@@ -21,6 +22,7 @@ class generator;
     
     //initialize function for generator class
     function new(input mailbox#(transaction) gen_driver_mb, 
+                 input mailbox#(transaction) gen_sco_mb,
                  input event sco_bd_done,
                  input bit  [1:0] packet_len_type, 
                  input bit  [2:0] dst_mac_addr_type, 
@@ -33,6 +35,7 @@ class generator;
         //Initialize 
         tr = new;
         this.gen_driver_mb      = gen_driver_mb;
+        this.gen_sco_mb         = gen_sco_mb;
         this.sco_bd_done        = sco_bd_done;
         this.packet_len_type    = packet_len_type;
         this.dst_mac_addr_type  = dst_mac_addr_type;

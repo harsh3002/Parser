@@ -30,6 +30,7 @@ package transaction_pkg;
                 bit             vlan_valid;
                 bit             qinq_valid;
         rand    bit     [15:0]  qinq_type;
+                bit     [15:0]  vlan_id;
         
         //Actual packet data
         rand    bit     [63:0]  packet_data_queue [$];
