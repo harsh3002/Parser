@@ -1,26 +1,85 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 09.06.2026 20:58:57
-// Design Name: 
-// Module Name: environment
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+`include "generator.sv"
+`include "driver.sv"
+`include "monitor.sv"
+`include "scoreboard.sv"
+`include "transction.sv"
+`include "interface.sv"
+
+`ifndef ETH_PARSE_ENVIRONMENT
+`define ETH_PARSE_ENVIRONMENT
+
+import transaction_pkg::* ;
+
+`define mailbox_sco mailbox#(transaction)
+
+class enviornment;
+
+    generator   gen;
+    monitor     mon;
+    driver      drv;
+    scoreboard  sco;
+    
+    mailbox_sco mon_sco_mb;
+    mailbox_sco gen_sco_mb;
+    mailbox_sco gen_drv_mb;
+    event       sco_done;
+    event       gen_done;
+    int         gen_count;
+    
+    //initialize function for generator class
+    function new(input      virtual     parser_ifc  vifc,
+                 input      int                     gen_count,
+                 input bit  [1:0]                   packet_len_type, 
+                 input bit  [2:0]                   dst_mac_addr_type, 
+                 input bit  [2:0]                   ether_type, 
+                 input bit  [1:0]                   vlan_type
+                 );
+                   
+        //intialize mailbox
+        gen_drv_mb              = new();
+        gen_sco_mb              = new();
+        mon_sco_mb              = new();
+        
+        //initiliaze env components
+        gen     = new(gen_drv_mb, gen_sco_mb, sco_done, packet_len_type, dst_mac_addr_type, ether_type, vlan_type, gen_count);
+        drv     = new(gen_drv_mb, sco_done, vifc);
+        mon     = new(mon_sco_mb, vifc);
+        sco     = new(mon_sco_mb, gen_sco_mb, sco_done);
+        
+    endfunction
+    
+    //Define pre_test task
+    task pre_test;
+        drv.reset_dut();
+    endtask
+    
+    //Define test task
+    task test;
+            fork
+                gen.gen_stimulus();
+                drv.drvie_stimulus();
+                mon.sample_values();
+                sco.sample_values();
+            join_none
+        endtask
+    
+    //Define post_test task
+    task post_test;
+            wait(gen.gen_done.triggered);
+            $display("[ENV] : TERMINATING TEST BENCH");
+            $display("[ENV] : TOTAL MISMATCHED TRANSACTIONS: %0d", sco.error_count);
+            $finish;
+        endtask
+    
+    //Define Main task
+    task run;
+        pre_test();
+        test();
+        post_test();
+    endtask
+
+endclass
 
 
-module environment(
+`endif
 
-    );
-endmodule
