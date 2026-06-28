@@ -5,14 +5,14 @@
 
 import transaction_pkg::* ;
 
-`define mailbox_gen mailbox#(transaction)
+//`define mailbox_gen mailbox#(transaction)
 
 
 class generator;
     
     transaction tr;
-    mailbox_gen gen_driver_mb;
-    mailbox_gen gen_sco_mb;
+    mailbox#(transaction) gen_driver_mb;
+    mailbox#(transaction) gen_sco_mb;
     event       gen_done, sco_bd_done;
     bit  [1:0]  packet_len_type; 
     bit  [2:0]  dst_mac_addr_type;
@@ -46,14 +46,14 @@ class generator;
     endfunction
     
     //Display function
-    function display();
+    function void display();
         $display("=============================================================================================================================================================================================");
         $display("%0t[GEN] : GENERATED VALUES",$time);
         $display("%0t[GEN] : Packet_Type %d  \t Dest_MAC_Addr_type %d  \t Ether_Type %d  \t VLAN_Type %d", $time, packet_len_type, dst_mac_addr_type, ether_type, vlan_type);
-        $display("%0t[GEN] : Source_MAC_Addr %d  \t Dest_MAC_Addr_type %d", $time, tr.copy.src_mac_addr, tr.copy.src_mac_addr);
-        $display("%0t[GEN] : Ether_Type %d  \t Dest_MAC_Addr_type %d", $time, tr.copy.src_mac_addr, tr.copy.src_mac_addr);
-        $display("%0t[GEN] : VLAN_Type %d  \t TCI %d", $time, tr.copy.vlan_type, tr.copy.inner_vlan_id);
-        $display("%0t[GEN] : QinQ_Type %d  \t TCI %d", $time, tr.copy.qinq_type, tr.copy.outer_vlan_id);
+        $display("%0t[GEN] : Source_MAC_Addr %d  \t Dest_MAC_Addr_type %d", $time, tr.src_mac_addr, tr.dst_mac_addr);
+        $display("%0t[GEN] : Ether_Type %d ", $time, tr.ether_type, tr.dst_mac_addr);
+        $display("%0t[GEN] : VLAN_Type %d  \t TCI %d", $time, tr.vlan_type, tr.inner_vlan_id);
+        $display("%0t[GEN] : QinQ_Type %d  \t TCI %d", $time, tr.qinq_type, tr.outer_vlan_id);
     endfunction
     
     //Main stimulus genration task
@@ -61,14 +61,11 @@ class generator;
         
         repeat(gen_count) begin
             
-            //Assign all flags to transaction 
-            tr.gen_driver_mb      = gen_driver_mb;
-            tr.sco_bd_done        = sco_bd_done;
-            tr.packet_len_type    = packet_len_type;
-            tr.dst_mac_addr_type  = dst_mac_addr_type;
-            tr.ether_type         = ether_type;
-            tr.vlan_type          = vlan_type;
-            tr.gen_count          = gen_count;
+            //Assign all flags to transaction
+            {tr.jumbo_frame_valid, tr.min_frame_valid}                                  = packet_len_type;
+            {tr.unicast_addr_valid, tr.multicast_addr_valid, tr.broadcast_addr_valid}   = dst_mac_addr_type;
+            {tr.ipv4_valid, tr.ipv6_valid, tr.arp_valid}                                = ether_type;
+            {tr.vlan_valid, tr.qinq_valid}                                              = vlan_type;
             
             //Generate stimulus
             assert(tr.randomize());

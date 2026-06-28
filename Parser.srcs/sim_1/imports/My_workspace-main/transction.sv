@@ -39,17 +39,17 @@ package transaction_pkg;
         constraint  c_packet_len {if(jumbo_frame_valid == 1)
                                     {
                                         packet_len inside {[1500:9000]};
-                                        packet_data_queue.len() == packet_len;
+                                        packet_data_queue.size() == packet_len;
                                     }
                                   else if(min_frame_valid == 1)
                                     {
                                         packet_len == 64;
-                                        packet_data_queue.len() == packet_len;
+                                        packet_data_queue.size() == packet_len;
                                     }
                                   else 
                                     {
                                         packet_len inside {[0:9000]};
-                                        packet_data_queue.len() == packet_len;
+                                        packet_data_queue.size() == packet_len;
                                     }
                                   };
                                   
@@ -103,7 +103,7 @@ package transaction_pkg;
 
         
         //Function for post-randomize for the packet data alignment
-        function post_randomize();
+        function void post_randomize();
             
             packet_data_queue[0]        = {dst_mac_addr, src_mac_addr[47:32]};
             packet_data_queue[1][63:32] = {src_mac_addr[31:0]};
@@ -146,7 +146,7 @@ package transaction_pkg;
         function transaction copy;
         
             copy                        = new;
-            copy.packet_length          = this.packet_length;
+            copy.packet_len             = this.packet_len;
             copy.jumbo_frame_valid      = this.jumbo_frame_valid;
             copy.min_frame_valid        = this.min_frame_valid;
             copy.dst_mac_addr           = this.dst_mac_addr;

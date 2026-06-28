@@ -10,18 +10,18 @@
 
 import transaction_pkg::* ;
 
-`define mailbox_sco mailbox#(transaction)
+//`define mailbox_sco mailbox#(transaction)
 
-class enviornment;
+class environment;
 
     generator   gen;
     monitor     mon;
     driver      drv;
     scoreboard  sco;
     
-    mailbox_sco mon_sco_mb;
-    mailbox_sco gen_sco_mb;
-    mailbox_sco gen_drv_mb;
+    mailbox#(transaction) mon_sco_mb;
+    mailbox#(transaction) gen_sco_mb;
+    mailbox#(transaction) gen_drv_mb;
     event       sco_done;
     event       gen_done;
     int         gen_count;

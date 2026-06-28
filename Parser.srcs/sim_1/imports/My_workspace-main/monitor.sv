@@ -7,15 +7,15 @@
 
 import transaction_pkg::* ;
 
-`define mailbox_mon mailbox#(transaction)
-`define virtual parser_ifc vifc
+//`define mailbox_mon mailbox#(transaction)
+//`define virtual parser_ifc vifc
 
 
 class monitor;
     
     transaction tr;
-    mailbox_mon mon_sco_mb;
-    vifc        mon_ifc;
+    mailbox#(transaction) mon_sco_mb;
+    virtual parser_ifc        mon_ifc;
     
     //initialize function for generator class
     function new(input      mailbox#(transaction)   mon_sco_mb, 
@@ -47,9 +47,9 @@ class monitor;
     task sample_data();
         
         $display("%0t[MON] : SAMPLING DATA",$time);
-        tr.dst_mac_addr         = mon_ifc.dst_mac_addr;
-        tr.src_mac_addr         = mon_ifc.src_mac_addr;
-        tr.ethertype            = mon_ifc.ethertype;
+        tr.dst_mac_addr         = mon_ifc.dst_mac;
+        tr.src_mac_addr         = mon_ifc.src_mac;
+        tr.ether_type            = mon_ifc.ethertype;
         tr.vlan_valid           = mon_ifc.vlan_present;
         tr.vlan_id              = mon_ifc.vlan_id;
         tr.qinq_valid           = mon_ifc.qinq_present;

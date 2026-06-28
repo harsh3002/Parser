@@ -13,8 +13,8 @@ class scoreboard;
     
     transaction gen_sco_tr;
     transaction mon_sco_tr;
-    mailbox_sco mon_sco_mb;
-    mailbox_sco gen_sco_mb;
+    mailbox#(transaction) mon_sco_mb;
+    mailbox#(transaction) gen_sco_mb;
     event       sco_done;
     int         error_count = 0;
     
@@ -58,10 +58,10 @@ class scoreboard;
             $display("%0t[SCO] : SOURCE ADDRESS MISMATCH :",$time);
             $display("%0t[SCO] : EXPECTED SRC_ADDR : %0d    SAMPLED SRC_ADDR : %0d :",$time, gen_sco_tr.src_mac_addr, mon_sco_tr.src_mac_addr);
         end
-        if(mon_sco_tr.ethertype != gen_sco_tr.ethertype) begin
+        if(mon_sco_tr.ether_type != gen_sco_tr.ether_type) begin
             error_count++;
             $display("%0t[SCO] : ETHER TYPE MISMATCH :",$time);
-            $display("%0t[SCO] : EXPECTED ETHER_TYPE : %0d    SAMPLED ETHER_TYPE : %0d :",$time, gen_sco_tr.ethertype, mon_sco_tr.ethertype);
+            $display("%0t[SCO] : EXPECTED ETHER_TYPE : %0d    SAMPLED ETHER_TYPE : %0d :",$time, gen_sco_tr.ether_type, mon_sco_tr.ether_type);
         end
         else if(mon_sco_tr.vlan_valid != gen_sco_tr.vlan_valid) begin
             error_count++;
