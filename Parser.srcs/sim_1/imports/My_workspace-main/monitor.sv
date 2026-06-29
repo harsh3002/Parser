@@ -29,11 +29,6 @@ class monitor;
         
     endfunction
     
-    //Display function
-    function display();
-        $display("%0t[MON] : MONITOR",$time);
-    endfunction
-    
     //Reset  sampling function 
     task sample_reset();
         
@@ -46,7 +41,7 @@ class monitor;
     //Data sampling function
     task sample_data();
         
-        $display("%0t[MON] : SAMPLING DATA",$time);
+//        $display("%0t[MON] : SAMPLING DATA",$time);
         tr.dst_mac_addr         = mon_ifc.dst_mac;
         tr.src_mac_addr         = mon_ifc.src_mac;
         tr.ether_type            = mon_ifc.ethertype;
@@ -67,7 +62,7 @@ class monitor;
         
         
         
-        $display("%0t[MON] : SAMPLING DATA BEAT DONE",$time);
+//        $display("%0t[MON] : SAMPLING DATA BEAT DONE",$time);
         
     endtask
     
@@ -79,9 +74,12 @@ class monitor;
             @(mon_ifc.mon_cb);
             if(mon_ifc.rst) begin
                 sample_reset;
+                mon_sco_mb.put(tr);
             end
             else if(mon_ifc.s_axis_tlast & mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready)begin
+                @(mon_ifc.mon_cb);
                 sample_data;
+                $display("%0t[MON] : SAMPLING DATA PACKET DONE. SENDING IT TO SCOREBOARD.",$time);
                 mon_sco_mb.put(tr);
             end
             else if(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready)begin

@@ -6,7 +6,7 @@ package transaction_pkg;
     class transaction;
         
         //Packet global parameters
-        rand    bit     [14:0]  packet_len;
+        rand    bit     [18:0]  packet_len;
                 bit             jumbo_frame_valid;
                 bit             min_frame_valid;
         
@@ -99,6 +99,16 @@ package transaction_pkg;
                                         inner_vlan_id[12]       == 0 ;
                                         inner_vlan_id[11:0] inside {[0:12'hfff]} ;
                                     }
+                                  else {
+                                        qinq_type               == 0;
+                                        outer_vlan_id[15:13]    == 0;
+                                        outer_vlan_id[12]       == 0;
+                                        outer_vlan_id[11:0]     == 0;
+                                        vlan_type               == 0;
+                                        inner_vlan_id[15:13]    == 0;
+                                        inner_vlan_id[12]       == 0;
+                                        inner_vlan_id[11:0]     == 0;
+                                   }
                                   };
 
         
@@ -163,6 +173,7 @@ package transaction_pkg;
             copy.outer_vlan_id          = this.outer_vlan_id;
             copy.vlan_valid             = this.vlan_valid;
             copy.qinq_valid             = this.qinq_valid;
+            copy.packet_data_queue      = this.packet_data_queue;
             
         endfunction
     

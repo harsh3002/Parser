@@ -25,7 +25,6 @@ class driver;
                  );
                    
         //Initialize 
-        tr                      = new;
         this.gen_driver_mb      = gen_driver_mb;
         this.sco_bd_done        = sco_bd_done;
         this.drv_ifc            = drv_ifc; 
@@ -57,7 +56,6 @@ class driver;
     //Main stimulus genration task
     task drvie_stimulus;
 
-        reset_dut();
         display();
         
         forever begin
@@ -70,11 +68,13 @@ class driver;
                 drv_ifc.drv_cb.s_axis_tdata  <= tr.packet_data_queue[x];
                 drv_ifc.drv_cb.s_axis_tkeep  <= 'hff;
                 drv_ifc.drv_cb.s_axis_tvalid <= (x <= (tr.packet_len - 1));
-                drv_ifc.drv_cb.s_axis_tlast  <= (x == (tr.packet_len - 1));
-                $display("%0t[DRV] : Beat %0d = %0h", $time, x, drv_ifc.s_axis_tdata);
-                $display("[DRV] : DATA DRVIEN");
+                drv_ifc.drv_cb.s_axis_tlast  <= (x == (tr.packet_len - 2));
+//                $display("%0t[DRV] : Beat %0d = %0h", $time, x, drv_ifc.s_axis_tdata);
+//                $display("[DRV] : DATA DRVIEN");
             
             end
+            
+            $display("%0t[DRV] : DONE DRIVING DATA.", $time);
             
             drv_ifc.drv_cb.s_axis_tdata  <= 0;
             drv_ifc.drv_cb.s_axis_tkeep  <= 0;

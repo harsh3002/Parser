@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -45,7 +45,7 @@ module ethernet_parser_top(
         output logic [11:0] inner_vlan_id,
         
         //Packet size signals
-        output logic [15:0] packet_length,
+        output logic [18:0] packet_length,
         output logic        jumbo_frame,
         
         //Addres information signals
@@ -123,7 +123,7 @@ module ethernet_parser_top(
     
     //State machine logic for ethernet parser 
     always@(posedge clk_i)begin
-        if(!rstn_i)begin
+        if(rstn_i)begin
             state               <= ST_IDLE;
             header_window       <= 0;
             s_axis_tready       <= 0;
@@ -177,7 +177,7 @@ module ethernet_parser_top(
                         is_ipv6                 <= 0;
                         is_arp                  <= 0;
                         metadata_valid          <= 0;
-                        beat_counter            <= beat_counter + 1'b1;
+                        beat_counter            <= 1'b1;
                     end
                     
                 end
@@ -235,7 +235,7 @@ module ethernet_parser_top(
                     
                     //Data signals 
                     beat_counter    <= (s_axis_tready & s_axis_tvalid) ? beat_counter + 1'b1 : beat_counter;
-                    packet_length   <= (s_axis_tready & s_axis_tvalid & s_axis_tlast) ? (beat_counter << 3) + $countones(s_axis_tkeep) : packet_length ;
+                    packet_length   <= (s_axis_tready & s_axis_tvalid & s_axis_tlast) ? (beat_counter+1 << 3) + $countones(s_axis_tkeep) : packet_length ;
                     jumbo_frame     <= (((beat_counter << 3) + $countones(s_axis_tkeep)) > 1500) ? 1'd1 : 1'd0;
                     
                 end

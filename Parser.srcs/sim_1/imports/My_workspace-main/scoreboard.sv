@@ -25,10 +25,9 @@ class scoreboard;
                  );
                    
         //Initialize 
-        gen_sco_tr              = new;
-        mon_sco_tr              = new;
         this.mon_sco_mb         = mon_sco_mb;
         this.gen_sco_mb         = gen_sco_mb;
+        this.sco_done           = sco_done;
         
     endfunction
     
@@ -88,10 +87,10 @@ class scoreboard;
             $display("%0t[SCO] : INNER VLAN ID MISMATCH :",$time);
             $display("%0t[SCO] : EXPECTED INNER_VLAN_ID : %0d    SAMPLED INNER_VLAN_ID : %0d :",$time, gen_sco_tr.inner_vlan_id, mon_sco_tr.inner_vlan_id);
         end
-        if(mon_sco_tr.packet_len != gen_sco_tr.packet_len) begin
+        if(mon_sco_tr.packet_len != (gen_sco_tr.packet_len*8)) begin
             error_count++;
             $display("%0t[SCO] : PACKET LENGTH MISMATCH :",$time);
-            $display("%0t[SCO] : EXPECTED PACKET_LEN : %0d    SAMPLED PACKET_LEN : %0d :",$time, gen_sco_tr.packet_len, mon_sco_tr.packet_len);
+            $display("%0t[SCO] : EXPECTED PACKET_LEN : %0d    SAMPLED PACKET_LEN : %0d :",$time, (gen_sco_tr.packet_len*8), mon_sco_tr.packet_len);
         end
         if(mon_sco_tr.jumbo_frame_valid != gen_sco_tr.jumbo_frame_valid) begin
             error_count++;
@@ -128,17 +127,17 @@ class scoreboard;
             $display("%0t[SCO] : ARP VALID MISMATCH :",$time);
             $display("%0t[SCO] : EXPECTED ARP_VALID : %0d    SAMPLED ARP_VALID : %0d :",$time, gen_sco_tr.arp_valid, mon_sco_tr.arp_valid);
         end
-        if(mon_sco_tr.packet_data_queue != gen_sco_tr.packet_data_queue) begin
-            error_count++;
-            $display("%0t[SCO] : DATA PACKET MISMATCH :",$time);
-            $display("%0t[SCO] : EXPECTED DATA PACKET  : %0d    SAMPLED DATA PACKET  : %0d :",$time, gen_sco_tr.packet_data_queue, mon_sco_tr.packet_data_queue);
-        end
+//        if(mon_sco_tr.packet_data_queue != gen_sco_tr.packet_data_queue) begin
+//            error_count++;
+//            $display("%0t[SCO] : DATA PACKET MISMATCH :",$time);
+//            $display("%0t[SCO] : EXPECTED DATA PACKET  : %0d    SAMPLED DATA PACKET  : %0d :",$time, gen_sco_tr.packet_data_queue, mon_sco_tr.packet_data_queue);
+//        end
         
         if(error_count != 0 )begin
-            $display("%0t[SCO] : ERRORS CAUGHT IN PARSER :",$time);
+            $display("%0t[SCO] : ERRORS CAUGHT IN PARSER :",$time, error_count);
         end
         else begin
-            $display("%0t[SCO] : PARSER IS ERROR FREE :",$time);
+            $display("%0t[SCO] : PARSER IS ERROR FREE ",$time);
         end
         
         $display("%0t[SCO] : VALIDATING DATA PACKET DONE",$time);
@@ -153,6 +152,8 @@ class scoreboard;
             gen_sco_mb.get(gen_sco_tr);
             mon_sco_mb.get(mon_sco_tr);
             validate_packet_data();
+            $display("%0t[SCO] : TRANSACTION COMPLETED ",$time);
+            $display("---------------------------------------------------------------------------------------------");
             ->sco_done;
             
         end

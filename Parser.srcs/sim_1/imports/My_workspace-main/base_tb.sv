@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 
 `include "environment.sv"
 `include "interface.sv"
@@ -75,7 +75,7 @@ module base_tb();
         vlan_type           = 2'b00;
         
         env = new(eth_ifc, 
-                  1,
+                  2,
                   packet_len_type,
                   dst_mac_addr_type,
                   ether_type,

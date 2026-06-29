@@ -24,7 +24,6 @@ class environment;
     mailbox#(transaction) gen_drv_mb;
     event       sco_done;
     event       gen_done;
-    int         gen_count;
     
     //initialize function for generator class
     function new(input      virtual     parser_ifc  vifc,
@@ -41,7 +40,7 @@ class environment;
         mon_sco_mb              = new();
         
         //initiliaze env components
-        gen     = new(gen_drv_mb, gen_sco_mb, sco_done, packet_len_type, dst_mac_addr_type, ether_type, vlan_type, gen_count);
+        gen     = new(gen_drv_mb, gen_sco_mb, sco_done, packet_len_type, dst_mac_addr_type, ether_type, vlan_type, gen_count, gen_done);
         drv     = new(gen_drv_mb, sco_done, vifc);
         mon     = new(mon_sco_mb, vifc);
         sco     = new(mon_sco_mb, gen_sco_mb, sco_done);
@@ -65,9 +64,8 @@ class environment;
     
     //Define post_test task
     task post_test;
-            wait(gen.gen_done.triggered);
-            $display("[ENV] : TERMINATING TEST BENCH");
-            $display("[ENV] : TOTAL MISMATCHED TRANSACTIONS: %0d", sco.error_count);
+            @(gen_done);
+            $display("%0t[ENV] : TERMINATING TEST BENCH.",$time);
             $finish;
         endtask
     

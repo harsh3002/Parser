@@ -28,12 +28,13 @@ class generator;
                  input bit  [2:0] dst_mac_addr_type, 
                  input bit  [2:0] ether_type, 
                  input bit  [1:0] vlan_type,
-                 input int        gen_count 
+                 input int        gen_count,
+                 input event     gen_done
                  );
                  
                  
         //Initialize 
-        tr = new;
+        tr                      = new;
         this.gen_driver_mb      = gen_driver_mb;
         this.gen_sco_mb         = gen_sco_mb;
         this.sco_bd_done        = sco_bd_done;
@@ -42,6 +43,7 @@ class generator;
         this.ether_type         = ether_type;
         this.vlan_type          = vlan_type;
         this.gen_count          = gen_count;
+        this.gen_done           = gen_done;
         
     endfunction
     
@@ -49,11 +51,11 @@ class generator;
     function void display();
         $display("=============================================================================================================================================================================================");
         $display("%0t[GEN] : GENERATED VALUES",$time);
-        $display("%0t[GEN] : Packet_Type %d  \t Dest_MAC_Addr_type %d  \t Ether_Type %d  \t VLAN_Type %d", $time, packet_len_type, dst_mac_addr_type, ether_type, vlan_type);
-        $display("%0t[GEN] : Source_MAC_Addr %d  \t Dest_MAC_Addr_type %d", $time, tr.src_mac_addr, tr.dst_mac_addr);
-        $display("%0t[GEN] : Ether_Type %d ", $time, tr.ether_type, tr.dst_mac_addr);
-        $display("%0t[GEN] : VLAN_Type %d  \t TCI %d", $time, tr.vlan_type, tr.inner_vlan_id);
-        $display("%0t[GEN] : QinQ_Type %d  \t TCI %d", $time, tr.qinq_type, tr.outer_vlan_id);
+        $display("%0t[GEN] : Packet_Type %h  \t Packet_lenth %d  \t Ether_Type %h  \t VLAN_Type %h", $time, packet_len_type, tr.packet_len, ether_type, vlan_type);
+        $display("%0t[GEN] : Source_MAC_Addr %h  \t Dest_MAC_Addr_type %h", $time, tr.src_mac_addr, tr.dst_mac_addr);
+        $display("%0t[GEN] : Ether_Type %h ", $time, tr.ether_type, tr.dst_mac_addr);
+        $display("%0t[GEN] : VLAN_Type %h  \t TCI %h", $time, tr.vlan_type, tr.inner_vlan_id);
+        $display("%0t[GEN] : QinQ_Type %h  \t TCI %h", $time, tr.qinq_type, tr.outer_vlan_id);
     endfunction
     
     //Main stimulus genration task
@@ -68,10 +70,11 @@ class generator;
             {tr.vlan_valid, tr.qinq_valid}                                              = vlan_type;
             
             //Generate stimulus
-            assert(tr.randomize());
+            assert(tr.randomize);
             gen_driver_mb.put(tr.copy);
+            gen_sco_mb.put(tr.copy);
             display();
-            $display("[GEN] : DATA SENT TO DRIVER");
+            $display("%0t[GEN] : DATA SENT TO DRIVER",$time);
             @(sco_bd_done);
             #1;
         

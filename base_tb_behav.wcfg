@@ -14,149 +14,155 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="391.501 ns"></ZoomEndTime>
-      <Cursor1Time time="40.000 ns"></Cursor1Time>
+      <ZoomStartTime time="5.166666 us"></ZoomStartTime>
+      <ZoomEndTime time="36.166667 us"></ZoomEndTime>
+      <Cursor1Time time="31.000000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="199"></NameColumnWidth>
-      <ValueColumnWidth column_width="168"></ValueColumnWidth>
+      <ValueColumnWidth column_width="158"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="34" />
-   <wvobject fp_name="/base_tb/dut/clk_i" type="logic">
-      <obj_property name="ElementShortName">clk_i</obj_property>
-      <obj_property name="ObjectShortName">clk_i</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/rstn_i" type="logic">
-      <obj_property name="ElementShortName">rstn_i</obj_property>
-      <obj_property name="ObjectShortName">rstn_i</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/s_axis_tdata" type="array">
-      <obj_property name="ElementShortName">s_axis_tdata[63:0]</obj_property>
-      <obj_property name="ObjectShortName">s_axis_tdata[63:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/s_axis_tkeep" type="array">
-      <obj_property name="ElementShortName">s_axis_tkeep[7:0]</obj_property>
-      <obj_property name="ObjectShortName">s_axis_tkeep[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/s_axis_tvalid" type="logic">
-      <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
-      <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/s_axis_tready" type="logic">
-      <obj_property name="ElementShortName">s_axis_tready</obj_property>
-      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/s_axis_tlast" type="logic">
-      <obj_property name="ElementShortName">s_axis_tlast</obj_property>
-      <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/dst_mac" type="array">
-      <obj_property name="ElementShortName">dst_mac[47:0]</obj_property>
-      <obj_property name="ObjectShortName">dst_mac[47:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/src_mac" type="array">
-      <obj_property name="ElementShortName">src_mac[47:0]</obj_property>
-      <obj_property name="ObjectShortName">src_mac[47:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/ethertype" type="array">
-      <obj_property name="ElementShortName">ethertype[15:0]</obj_property>
-      <obj_property name="ObjectShortName">ethertype[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/vlan_present" type="logic">
-      <obj_property name="ElementShortName">vlan_present</obj_property>
-      <obj_property name="ObjectShortName">vlan_present</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/vlan_id" type="array">
-      <obj_property name="ElementShortName">vlan_id[11:0]</obj_property>
-      <obj_property name="ObjectShortName">vlan_id[11:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/qinq_present" type="logic">
-      <obj_property name="ElementShortName">qinq_present</obj_property>
-      <obj_property name="ObjectShortName">qinq_present</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/outer_vlan_id" type="array">
-      <obj_property name="ElementShortName">outer_vlan_id[11:0]</obj_property>
-      <obj_property name="ObjectShortName">outer_vlan_id[11:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/inner_vlan_id" type="array">
-      <obj_property name="ElementShortName">inner_vlan_id[11:0]</obj_property>
-      <obj_property name="ObjectShortName">inner_vlan_id[11:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/packet_length" type="array">
-      <obj_property name="ElementShortName">packet_length[15:0]</obj_property>
-      <obj_property name="ObjectShortName">packet_length[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/jumbo_frame" type="logic">
-      <obj_property name="ElementShortName">jumbo_frame</obj_property>
-      <obj_property name="ObjectShortName">jumbo_frame</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/is_unicast" type="logic">
-      <obj_property name="ElementShortName">is_unicast</obj_property>
-      <obj_property name="ObjectShortName">is_unicast</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/is_multicast" type="logic">
-      <obj_property name="ElementShortName">is_multicast</obj_property>
-      <obj_property name="ObjectShortName">is_multicast</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/is_broadcast" type="logic">
-      <obj_property name="ElementShortName">is_broadcast</obj_property>
-      <obj_property name="ObjectShortName">is_broadcast</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/is_ipv4" type="logic">
-      <obj_property name="ElementShortName">is_ipv4</obj_property>
-      <obj_property name="ObjectShortName">is_ipv4</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/is_ipv6" type="logic">
-      <obj_property name="ElementShortName">is_ipv6</obj_property>
-      <obj_property name="ObjectShortName">is_ipv6</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/is_arp" type="logic">
-      <obj_property name="ElementShortName">is_arp</obj_property>
-      <obj_property name="ObjectShortName">is_arp</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/metadata_valid" type="logic">
-      <obj_property name="ElementShortName">metadata_valid</obj_property>
-      <obj_property name="ObjectShortName">metadata_valid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/state" type="array">
-      <obj_property name="ElementShortName">state[3:0]</obj_property>
-      <obj_property name="ObjectShortName">state[3:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/header_window" type="array">
-      <obj_property name="ElementShortName">header_window[127:0]</obj_property>
-      <obj_property name="ObjectShortName">header_window[127:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/beat_counter" type="array">
-      <obj_property name="ElementShortName">beat_counter[15:0]</obj_property>
-      <obj_property name="ObjectShortName">beat_counter[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/IPv4" type="array">
-      <obj_property name="ElementShortName">IPv4[15:0]</obj_property>
-      <obj_property name="ObjectShortName">IPv4[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/IPv6" type="array">
-      <obj_property name="ElementShortName">IPv6[15:0]</obj_property>
-      <obj_property name="ObjectShortName">IPv6[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/ARP" type="array">
-      <obj_property name="ElementShortName">ARP[15:0]</obj_property>
-      <obj_property name="ObjectShortName">ARP[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/VLAN" type="array">
-      <obj_property name="ElementShortName">VLAN[15:0]</obj_property>
-      <obj_property name="ObjectShortName">VLAN[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/QinQ" type="array">
-      <obj_property name="ElementShortName">QinQ[15:0]</obj_property>
-      <obj_property name="ObjectShortName">QinQ[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/MULTICAST" type="logic">
-      <obj_property name="ElementShortName">MULTICAST</obj_property>
-      <obj_property name="ObjectShortName">MULTICAST</obj_property>
-   </wvobject>
-   <wvobject fp_name="/base_tb/dut/BROADCAST" type="array">
-      <obj_property name="ElementShortName">BROADCAST[47:0]</obj_property>
-      <obj_property name="ObjectShortName">BROADCAST[47:0]</obj_property>
+   <WVObjectSize size="1" />
+   <wvobject fp_name="group35" type="group">
+      <obj_property name="label">DUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/base_tb/dut/clk_i" type="logic">
+         <obj_property name="ElementShortName">clk_i</obj_property>
+         <obj_property name="ObjectShortName">clk_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/rstn_i" type="logic">
+         <obj_property name="ElementShortName">rstn_i</obj_property>
+         <obj_property name="ObjectShortName">rstn_i</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/s_axis_tdata" type="array">
+         <obj_property name="ElementShortName">s_axis_tdata[63:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[63:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/s_axis_tkeep" type="array">
+         <obj_property name="ElementShortName">s_axis_tkeep[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/s_axis_tvalid" type="logic">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/s_axis_tready" type="logic">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/s_axis_tlast" type="logic">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/dst_mac" type="array">
+         <obj_property name="ElementShortName">dst_mac[47:0]</obj_property>
+         <obj_property name="ObjectShortName">dst_mac[47:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/src_mac" type="array">
+         <obj_property name="ElementShortName">src_mac[47:0]</obj_property>
+         <obj_property name="ObjectShortName">src_mac[47:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/ethertype" type="array">
+         <obj_property name="ElementShortName">ethertype[15:0]</obj_property>
+         <obj_property name="ObjectShortName">ethertype[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/vlan_present" type="logic">
+         <obj_property name="ElementShortName">vlan_present</obj_property>
+         <obj_property name="ObjectShortName">vlan_present</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/vlan_id" type="array">
+         <obj_property name="ElementShortName">vlan_id[11:0]</obj_property>
+         <obj_property name="ObjectShortName">vlan_id[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/qinq_present" type="logic">
+         <obj_property name="ElementShortName">qinq_present</obj_property>
+         <obj_property name="ObjectShortName">qinq_present</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/outer_vlan_id" type="array">
+         <obj_property name="ElementShortName">outer_vlan_id[11:0]</obj_property>
+         <obj_property name="ObjectShortName">outer_vlan_id[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/inner_vlan_id" type="array">
+         <obj_property name="ElementShortName">inner_vlan_id[11:0]</obj_property>
+         <obj_property name="ObjectShortName">inner_vlan_id[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/packet_length" type="array">
+         <obj_property name="ElementShortName">packet_length[18:0]</obj_property>
+         <obj_property name="ObjectShortName">packet_length[18:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/jumbo_frame" type="logic">
+         <obj_property name="ElementShortName">jumbo_frame</obj_property>
+         <obj_property name="ObjectShortName">jumbo_frame</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/is_unicast" type="logic">
+         <obj_property name="ElementShortName">is_unicast</obj_property>
+         <obj_property name="ObjectShortName">is_unicast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/is_multicast" type="logic">
+         <obj_property name="ElementShortName">is_multicast</obj_property>
+         <obj_property name="ObjectShortName">is_multicast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/is_broadcast" type="logic">
+         <obj_property name="ElementShortName">is_broadcast</obj_property>
+         <obj_property name="ObjectShortName">is_broadcast</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/is_ipv4" type="logic">
+         <obj_property name="ElementShortName">is_ipv4</obj_property>
+         <obj_property name="ObjectShortName">is_ipv4</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/is_ipv6" type="logic">
+         <obj_property name="ElementShortName">is_ipv6</obj_property>
+         <obj_property name="ObjectShortName">is_ipv6</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/is_arp" type="logic">
+         <obj_property name="ElementShortName">is_arp</obj_property>
+         <obj_property name="ObjectShortName">is_arp</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/metadata_valid" type="logic">
+         <obj_property name="ElementShortName">metadata_valid</obj_property>
+         <obj_property name="ObjectShortName">metadata_valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/state" type="array">
+         <obj_property name="ElementShortName">state[3:0]</obj_property>
+         <obj_property name="ObjectShortName">state[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/header_window" type="array">
+         <obj_property name="ElementShortName">header_window[127:0]</obj_property>
+         <obj_property name="ObjectShortName">header_window[127:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/beat_counter" type="array">
+         <obj_property name="ElementShortName">beat_counter[15:0]</obj_property>
+         <obj_property name="ObjectShortName">beat_counter[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/IPv4" type="array">
+         <obj_property name="ElementShortName">IPv4[15:0]</obj_property>
+         <obj_property name="ObjectShortName">IPv4[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/IPv6" type="array">
+         <obj_property name="ElementShortName">IPv6[15:0]</obj_property>
+         <obj_property name="ObjectShortName">IPv6[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/ARP" type="array">
+         <obj_property name="ElementShortName">ARP[15:0]</obj_property>
+         <obj_property name="ObjectShortName">ARP[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/VLAN" type="array">
+         <obj_property name="ElementShortName">VLAN[15:0]</obj_property>
+         <obj_property name="ObjectShortName">VLAN[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/QinQ" type="array">
+         <obj_property name="ElementShortName">QinQ[15:0]</obj_property>
+         <obj_property name="ObjectShortName">QinQ[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/MULTICAST" type="logic">
+         <obj_property name="ElementShortName">MULTICAST</obj_property>
+         <obj_property name="ObjectShortName">MULTICAST</obj_property>
+      </wvobject>
+      <wvobject fp_name="/base_tb/dut/BROADCAST" type="array">
+         <obj_property name="ElementShortName">BROADCAST[47:0]</obj_property>
+         <obj_property name="ObjectShortName">BROADCAST[47:0]</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>
