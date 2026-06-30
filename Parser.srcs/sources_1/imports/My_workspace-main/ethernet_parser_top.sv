@@ -244,4 +244,60 @@ module ethernet_parser_top(
         end
     end
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //DECLARE ASSERTIONS
+    
+    //Property for meta_data_valid
+    property p_meta_data_valid;
+        @(posedge clk_i)
+        disable iff (rstn_i)
+        
+        (s_axis_tready & s_axis_tvalid) |-> ##[1:3] metadata_valid;
+    endproperty
+    
+    //Property for jumbo_frame_valid
+    property p_jumbo_frame_valid;
+        @(posedge clk_i)
+        disable iff (rstn_i)
+        
+        ((s_axis_tready & s_axis_tvalid & s_axis_tlast) && (packet_length > 1500)) |=>  jumbo_frame;
+    endproperty
+    
+    //Property for jumbo_frame_valid
+    property p_dst_addr_type;
+        @(posedge clk_i)
+        disable iff (!rstn_i)
+
+        (((s_axis_tready && s_axis_tvalid) && (dst_mac == BROADCAST))
+            |-> ##0 is_broadcast) and
+
+        (((s_axis_tready && s_axis_tvalid) &&
+          (dst_mac[40] && (dst_mac != BROADCAST)))
+            |-> ##0 is_multicast) and
+
+        (((s_axis_tready && s_axis_tvalid) &&
+          (!dst_mac[40] && (dst_mac != BROADCAST)))
+            |-> ##0 is_unicast);
+
+    endproperty
+    
+    //Property for Ether_type
+    property p_ether_type;
+        @(posedge clk_i)
+        disable iff (rstn_i)
+
+        ((s_axis_tready && s_axis_tvalid) && (ethertype == IPv4) |->  ##0 is_ipv4) and
+        ((s_axis_tready && s_axis_tvalid) && (ethertype == ARP)  |->  ##0 is_arp)  and
+        ((s_axis_tready && s_axis_tvalid) && (ethertype == IPv6) |->  ##0 is_ipv6);
+    endproperty
+    
+    //Assert all the properties
+    assert property (p_meta_data_valid);
+    assert property (p_jumbo_frame_valid);
+    assert property (p_dst_addr_type);
+    assert property (p_ether_type);
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
 endmodule

@@ -17,6 +17,40 @@ class monitor;
     mailbox#(transaction) mon_sco_mb;
     virtual parser_ifc        mon_ifc;
     
+    //Covergroup Declaration
+    covergroup eth_parser_cov @(mon_ifc.clk);
+        
+        cp_metadata_valid   : coverpoint mon_ifc.metadata_valid iff(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready);
+            
+        cp_dst_addr         : coverpoint mon_ifc.dst_mac iff(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready)(
+                                                            (mon_ifc.dst_mac == 48'hFFFF_FFFF_FFFF) ? 2'b00 :
+                                                            (mon_ifc.dst_mac[40])                   ? 2'b01 :
+                                                                                                      2'b10
+                                                          )
+                                                          {
+                                                              bins broadcast = {2'b00};
+                                                              bins multicast = {2'b01};
+                                                              bins unicast   = {2'b10};
+                                                          }
+                                                          
+        cp_ether_type       : coverpoint mon_ifc.ethertype iff(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready){
+                                                              bins ipv4 = {'h0800};
+                                                              bins ipv6 = {'h86DD};
+                                                              bins arp  = {'h0806};
+                                                            }
+                                                            
+        cp_vlan_presence    : coverpoint mon_ifc.vlan_present iff(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready);
+        
+        cp_qinq_presence    : coverpoint mon_ifc.qinq_present iff(mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready);
+        
+        cp_packet_size      : coverpoint mon_ifc.packet_length iff (mon_ifc.s_axis_tvalid & mon_ifc.s_axis_tready & mon_ifc.s_axis_tlast){
+                                                                bins min    = {64*8};
+                                                                bins normal = {[64*8 : 1500*8]};
+                                                                bins jumbo  = {[1500*8 : 9000*8};
+                                                              }
+    endgroup
+    
+    
     //initialize function for generator class
     function new(input      mailbox#(transaction)   mon_sco_mb, 
                  virtual    parser_ifc              mon_ifc
@@ -24,6 +58,7 @@ class monitor;
                    
         //Initialize 
         tr                      = new;
+        eth_parser_cov          = new();
         this.mon_sco_mb         = mon_sco_mb;
         this.mon_ifc            = mon_ifc; 
         
@@ -66,6 +101,8 @@ class monitor;
         
     endtask
     
+    
+    
     //Main stimulus genration task
     task sample_values;
         
@@ -89,6 +126,9 @@ class monitor;
         end
         
     endtask
+    
+    
+    
 
 endclass
 
