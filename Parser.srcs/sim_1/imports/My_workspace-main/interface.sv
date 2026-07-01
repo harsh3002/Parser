@@ -29,7 +29,7 @@ interface parser_ifc();
     logic [11:0] inner_vlan_id;
     
     //Packet size signals
-    logic [15:0] packet_length;
+    logic [18:0] packet_length;
     logic        jumbo_frame;
     
     //Addres information signals

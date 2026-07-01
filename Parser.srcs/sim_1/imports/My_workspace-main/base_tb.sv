@@ -17,6 +17,10 @@ module base_tb();
     bit  [2:0]                   dst_mac_addr_type; 
     bit  [2:0]                   ether_type;
     bit  [1:0]                   vlan_type;
+    bit                          min_frame_valid, jumbo_frame_valid;
+    bit                          unicast_valid, multicast_valid, broadcast_valid;
+    bit                          ipv4_valid, ipv6_valid, arp_valid;
+    bit                          vlan_valid, qinq_valid;
     
     //DUT instantiation
     ethernet_parser_top dut(
@@ -66,13 +70,11 @@ module base_tb();
     initial eth_ifc.clk = 1;
     always #2 eth_ifc.clk = ~eth_ifc.clk;
     
-    //Run test environment
-    initial begin
-        
-        packet_len_type     = 2'b10;  
-        dst_mac_addr_type   = 3'b100;
-        ether_type          = 3'b100;
-        vlan_type           = 2'b00;
+    task gen_test();
+        packet_len_type     = {jumbo_frame_valid, min_frame_valid};  
+        dst_mac_addr_type   = {unicast_valid, multicast_valid, broadcast_valid};
+        ether_type          = {ipv4_valid, ipv6_valid, arp_valid};
+        vlan_type           = {vlan_valid, qinq_valid};
         
         env = new(eth_ifc, 
                   2,
@@ -82,6 +84,24 @@ module base_tb();
                   vlan_type);
                   
         env.run();
+    endtask
+    
+    //Run test environment
+    initial begin
+        
+        min_frame_valid     = 0;
+        jumbo_frame_valid   = 0;
+        unicast_valid       = 0;
+        multicast_valid     = 0;
+        broadcast_valid     = 0;
+        ipv4_valid          = 0;
+        ipv6_valid          = 0;
+        arp_valid           = 0;
+        vlan_valid          = 0;
+        qinq_valid          = 0;
+        
+        $display("%0t[ENV] : TERMINATING TEST BENCH.",$time);
+        $finish;
     
     end
     

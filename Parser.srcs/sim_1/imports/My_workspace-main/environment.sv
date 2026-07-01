@@ -65,8 +65,8 @@ class environment;
     //Define post_test task
     task post_test;
             @(gen_done);
-            $display("%0t[ENV] : TERMINATING TEST BENCH.",$time);
-            $finish;
+            $display("%0t[ENV] : TERMINATING CURRENT TEST.",$time);
+            
         endtask
     
     //Define Main task
